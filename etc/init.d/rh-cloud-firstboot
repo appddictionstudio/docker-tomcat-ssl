@@ -1,0 +1,65 @@
+#!/bin/bash
+## BEGIN INIT INFO
+# Provides: rh-cloud-firstboot
+# Default-Start: 3 5
+# Default-Stop: 0 1 2 4 6
+# Required-Start:
+# Short-Description: Initializes rh-cloud configuration items on firstboot
+# Description: Firstboot runs the first time a cloud instance is booted after
+#              installation.  It checks for the existance of an
+#              /etc/sysconfig/rh-cloud-firstboot file.  If the file exists and
+#              contains RUN_FIRSTBOOT=NO, firstboot will not run.  Otherwise
+#              rh-cloud-firstboot will be run.  Copied from 'firstboot'
+## END INIT INFO
+
+#
+# rh-cloud-firstboot: Runs the rh-cloud-firstboot scripts if it hasn't been run before
+#
+# chkconfig: 35 45 95
+#
+# description: Firstboot runs the first time a cloud instance is booted after \
+#              installation.  It checks for the existance of an \
+#              /etc/sysconfig/rh-cloud-firstboot file.  If the file exists and \
+#              contains RUN_FIRSTBOOT=NO, firstboot will not run.  Otherwise \ 
+#              rh-cloud-firstboot will be run. 
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+FILENAME=/etc/sysconfig/rh-cloud-firstboot
+
+[ -z "$HOME" ] && export HOME=/
+
+case "$1" in
+    start)
+        args=""
+
+        if [ -f $FILENAME ] && [ ! -z "$(grep 'RUN_FIRSTBOOT=NO' $FILENAME)" ]; then
+            exit 0
+        fi
+
+        /usr/sbin/rh-cloud-firstboot.py $args
+        RETVAL=$?
+
+        # If firstboot succeeded, chkconfig it off so we don't see the message
+        # every time about starting up firstboot.
+        if [ "$RETVAL" -eq 0 ]; then
+            action "" /bin/true
+            /sbin/chkconfig rh-cloud-firstboot off
+        else
+            action "" /bin/false
+        fi
+
+        exit $RETVAL
+        ;;
+
+    stop)
+        exit 0
+        ;;
+
+    *)
+        echo $"Usage: $0 {start|stop}"
+        exit 3
+        ;;
+esac
