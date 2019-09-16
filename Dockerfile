@@ -32,6 +32,7 @@ RUN echo $"<?xml version=\"1.0\" encoding=\"UTF-8\"?><tomcat-users xmlns=\"http:
 COPY server.xml /opt/tomcat/conf/server.xml
 #COPY context.xml /opt/tomcat/conf/context.xml
 #COPY manager.xml /opt/tomcat/webapps/host-manager/manager.xml
+COPY web.xml /opt/tomcat/conf/web.xml 
 COPY setenv.sh /opt/tomcat/bin
 RUN chmod +x /opt/tomcat/bin/setenv.sh
 
