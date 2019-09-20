@@ -116,6 +116,10 @@
             <param-name>listings</param-name>
             <param-value>false</param-value>
         </init-param>
+        <multipart-config>
+        <max-file-size>5368709120</max-file-size>
+        <max-request-size>5368709120</max-request-size>
+    </multipart-config>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -270,6 +274,10 @@
             <param-name>xpoweredBy</param-name>
             <param-value>false</param-value>
         </init-param>
+        <multipart-config>
+        <max-file-size>5368709120</max-file-size>
+        <max-request-size>5368709120</max-request-size>
+    </multipart-config>
         <load-on-startup>3</load-on-startup>
     </servlet>
 
