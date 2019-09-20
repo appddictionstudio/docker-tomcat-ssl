@@ -18,7 +18,7 @@
 <!--<Connector connectionTimeout="20000" port="8080" protocol="HTTP/1.1" />-->
 <Connector
      connectionTimeout="50000"
-     port="1141"
+     port="1142"
      protocol="org.apache.coyote.http11.Http11NioProtocol"
      maxHttpHeaderSize="8129"
      maxThreads="150"
