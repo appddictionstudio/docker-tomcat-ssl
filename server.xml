@@ -23,6 +23,7 @@
      maxHttpHeaderSize="8129"
      maxThreads="150"
      SSLEnabled="true"
+     maxPostSize="524288000"
      minSpareThreads="25"
      maxSpareThreads="75"
      enableLookup="false"
