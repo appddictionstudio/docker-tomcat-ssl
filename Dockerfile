@@ -37,10 +37,20 @@ COPY setenv.sh /opt/tomcat/bin
 RUN chmod +x /opt/tomcat/bin/setenv.sh
 
 RUN mkdir /opt/certs
+COPY /certs /opt/certs
 # COPY gdig2_bundle.crt /opt/certs/gdig2_bundle.crt
 # COPY b8e15ee5a0fa8e89.crt /opt/certs/b8e15ee5a0fa8e89.crt
-RUN keytool -genkey  -keyalg RSA  -dname "CN=jsvede.bea.com,OU=DRE,O=BEA,L=Denver,S=Colorado,C=US" -keypass zx#asqw_TST456$  -storepass zx#asqw_TST456$ -keystore /opt/certs/tomcat.keystore
-RUN keytool -import -keystore cacerts.jks -storepass zx#asqw_TST456$ -alias my_ca -file ../../certtest/ca.crt Owner: EMAILADDRESS=ca@naive.sk, CN=CA Admin, OU=CA, O=Naive, L=Bratislava, ST=Bratislava, C=SK
+# Self Signing Certificate for Server
+RUN keytool -genkey -keyalg RSA -dname "CN=jsvede.bea.com,OU=DRE,O=BEA,L=Denver,S=Colorado,C=US" -keypass zx#asqw_TST456$  -storepass zx#asqw_TST456$ -keystore /opt/certs/tomcat.keystore
+
+# DoD Certificates
+RUN keytool -importcert -file /opt/certs/DoD_Root_CA_2__0x05__DoD_Root_CA_2.cer -alias DODRoot2 -keystore /opt/certs/truststore.jks -storepass changeit -noprompt
+RUN keytool -importcert -file /opt/certs/DoD_Root_CA_3__0x01__DoD_Root_CA_3.cer -alias DODRoot3 -keystore /opt/certs/truststore.jks -storepass changeit -noprompt
+RUN keytool -importcert -file /opt/certs/DoD_Root_CA_4__0x01__DoD_Root_CA_4.cer -alias DODRoot4 -keystore /opt/certs/truststore.jks -storepass changeit -noprompt
+RUN keytool -importcert -file /opt/certs/DoD_Root_CA_5__0x0F__DoD_Root_CA_5.cer -alias DODRoot5 -keystore /opt/certs/truststore.jks -storepass changeit -noprompt
+RUN keytool -importcert -file /opt/certs/DoD_Root_CA_3__0x012B__DOD_SW_CA-53.cer -alias DODRoot53 -keystore /opt/certs/truststore.jks -storepass changeit -noprompt
+RUN keytool -importcert -file /opt/certs/DoD_JITC_Root_CA_3__0x009B__DOD_JITC_SW_CA-53.cer -alias DODRootJITC53 -keystore /opt/certs/truststore.jks -storepass changeit -noprompt
+RUN keytool -list -keystore /opt/certs/truststore.jks
 RUN yum -y install mod_ssl
 
 VOLUME /opt/tomcat
