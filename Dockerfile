@@ -7,10 +7,10 @@ ENV PATH $CATALINA_HOME/bin:$PATH
 
 RUN mkdir /usr/lib/jvm
 
-RUN subscription-manager register --username ksummersill --password 'zxasqw12ZXASQW!@' --auto-attach
+# RUN subscription-manager unregister
+RUN subscription-manager register --username ksummersill --password "zxasqw12ZXASQW!@" --auto-attach
 RUN yum update -y
 RUN yum repolist all
-
 RUN yum -y update; yum clean all
 RUN yum -y install nano;
 RUN yum -y install wget;
@@ -19,8 +19,8 @@ RUN tar xvf openjdk-11+28_linux-x64_bin.tar.gz -C /usr/lib/jvm
 RUN java --version
 RUN useradd tomcat
 RUN mkdir /opt/tomcat
-RUN wget http://apache.spinellicreations.com/tomcat/tomcat-9/v9.0.24/bin/apache-tomcat-9.0.24.tar.gz
-RUN tar -zxvf apache-tomcat-9.0.24.tar.gz -C /opt/tomcat --strip-components=1
+RUN wget http://apache.spinellicreations.com/tomcat/tomcat-9/v9.0.34/bin/apache-tomcat-9.0.34.tar.gz
+RUN tar -zxvf apache-tomcat-9.0.34.tar.gz -C /opt/tomcat --strip-components=1
 RUN cd /opt && chown -R tomcat tomcat/
 RUN chmod 777 /etc/systemd/system
 RUN echo $"[Unit] Description=Apache Tomcat Web Application\Container After=syslog.target network.target\[Service]\Type=forking\Environment=JAVA_HOME=/usr/lib/jvm/jre\Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid\Environment=CATALINA_HOME=/opt/tomcat\Environment=CATALINA_BASE=/opt/tomcat\Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'\Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'\ExecStart=/opt/tomcat/bin/startup.sh\ExecStop=/bin/kill -15 $MAINPID\User=tomcat\Group=tomcat\[Install]\WantedBy=multi-user.target" > /etc/systemd/system/tomcat.service
@@ -46,6 +46,6 @@ RUN yum -y install mod_ssl
 VOLUME /opt/tomcat
 WORKDIR /opt/tomcat
 
-EXPOSE 1142
+EXPOSE 8443
 CMD ["catalina.sh", "run"]
 
