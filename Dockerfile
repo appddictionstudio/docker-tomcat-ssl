@@ -37,10 +37,10 @@ COPY setenv.sh /opt/tomcat/bin
 RUN chmod +x /opt/tomcat/bin/setenv.sh
 
 RUN mkdir /opt/certs
-COPY gdig2_bundle.crt /opt/certs/gdig2_bundle.crt
-COPY b8e15ee5a0fa8e89.crt /opt/certs/b8e15ee5a0fa8e89.crt
-
+# COPY gdig2_bundle.crt /opt/certs/gdig2_bundle.crt
+# COPY b8e15ee5a0fa8e89.crt /opt/certs/b8e15ee5a0fa8e89.crt
 RUN keytool -genkey  -keyalg RSA  -dname "CN=jsvede.bea.com,OU=DRE,O=BEA,L=Denver,S=Colorado,C=US" -keypass zx#asqw_TST456$  -storepass zx#asqw_TST456$ -keystore /opt/certs/tomcat.keystore
+RUN keytool -import -keystore cacerts.jks -storepass zx#asqw_TST456$ -alias my_ca -file ../../certtest/ca.crt Owner: EMAILADDRESS=ca@naive.sk, CN=CA Admin, OU=CA, O=Naive, L=Bratislava, ST=Bratislava, C=SK
 RUN yum -y install mod_ssl
 
 VOLUME /opt/tomcat
