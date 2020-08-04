@@ -18,7 +18,7 @@
 <!--<Connector connectionTimeout="20000" port="8080" protocol="HTTP/1.1" />-->
 <Connector
      connectionTimeout="50000"
-     port="1141"
+     port="2424"
      protocol="org.apache.coyote.http11.Http11NioProtocol"
      maxHttpHeaderSize="8129"
      maxThreads="150"
@@ -38,7 +38,7 @@
      keystoreFile="/opt/certs/tomcat.keystore"
      >
 </Connector>
-    <Connector port="8009" protocol="AJP/1.3"/>
+    <Connector port="8009" protocol="AJP/1.3" secretRequired="false" />
     <Engine name="Catalina" defaultHost="localhost">
           <Realm className="org.apache.catalina.realm.LockOutRealm">
           <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
